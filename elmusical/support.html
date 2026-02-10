@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soporte - El Musical Restaurante</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #89bb93;
+        }
+        h1 {
+            color: #89bb93;
+            font-size: 2.8em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+        h2 {
+            color: #89bb93;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            font-size: 1.9em;
+        }
+        h3 {
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 5px solid #89bb93;
+        }
+        .contact-section {
+            background: linear-gradient(135deg, #89bb93 0%, #6a9a77 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+        }
+        .contact-section h2 {
+            color: white;
+            margin-top: 0;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+        .contact-item span {
+            margin-right: 10px;
+            font-size: 1.5em;
+        }
+        .faq-item {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+        .faq-question {
+            font-weight: bold;
+            color: #89bb93;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .faq-answer {
+            color: #555;
+        }
+        .button {
+            display: inline-block;
+            background: #89bb93;
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 15px;
+            transition: background 0.3s;
+            font-weight: bold;
+        }
+        .button:hover {
+            background: #6a9a77;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #89bb93;
+        }
+        .feature-box h3 {
+            color: #89bb93;
+            margin-top: 10px;
+        }
+        .emoji {
+            font-size: 3em;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqL4i7eQfZ6Y8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8",
+            authDomain: "elmusical-4d45a.firebaseapp.com",
+            projectId: "elmusical-4d45a",
+            storageBucket: "elmusical-4d45a.firebasestorage.app",
+            messagingSenderId: "746054692745",
+            appId: "1:746054692745:web:abcdef1234567890abcdef"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadContactInfo() {
+            try {
+                const configDoc = await getDoc(doc(db, 'config', 'general'));
+                if (configDoc.exists()) {
+                    const data = configDoc.data();
+                    
+                    const whatsapp = data.whatsappNumber || '[Número no disponible]';
+                    const address = data.restaurantAddress || '[Dirección no disponible]';
+                    const email = data.contactEmail || 'contacto@elmusicalrestaurante.es';
+                    
+                    document.querySelectorAll('.contact-whatsapp').forEach(el => el.textContent = whatsapp);
+                    document.querySelectorAll('.contact-address').forEach(el => el.textContent = address);
+                    document.querySelectorAll('.contact-email').forEach(el => {
+                        el.textContent = email;
+                        if (el.tagName === 'A') el.href = 'mailto:' + email;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading contact info:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadContactInfo);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎵 Soporte El Musical</h1>
+            <p class="subtitle">Estamos aquí para ayudarte</p>
+        </div>
+
+        <h2>📱 Sobre la Aplicación</h2>
+        <p>
+            La aplicación de <strong>El Musical Restaurante</strong> te permite explorar nuestro menú completo, 
+            consultar platos del día, carta de vinos, menús especiales y realizar pre-pedidos de productos bajo demanda 
+            como tartas, cochinillos y servicios de catering.
+        </p>
+
+        <h2>✨ Características Principales</h2>
+        <div class="feature-grid">
+            <div class="feature-box">
+                <div class="emoji">🍽️</div>
+                <h3>Menú del Día</h3>
+                <p>Consulta nuestro menú diario actualizado según el día de la semana</p>
+            </div>
+            <div class="feature-box">
+                <div class="emoji">📋</div>
+                <h3>Carta Completa</h3>
+                <p>Explora todos nuestros platos organizados por categorías</p>
+            </div>
+            <div class="feature-box">
+                <div class="emoji">🍷</div>
+                <h3>Carta de Vinos</h3>
+                <p>Descubre nuestra selección de vinos tintos, blancos y rosados</p>
+            </div>
+            <div class="feature-box">
+                <div class="emoji">🎂</div>
+                <h3>Pre-Pedidos BBP</h3>
+                <p>Reserva tartas, cochinillos y servicios especiales con antelación</p>
+            </div>
+        </div>
+
+        <h2>❓ Preguntas Frecuentes (FAQ)</h2>
+        
+        <div class="card">
+            <div class="faq-item">
+                <div class="faq-question">¿Cómo actualizo el menú del día?</div>
+                <div class="faq-answer">
+                    El menú del día se actualiza automáticamente desde nuestro sistema. Simplemente abre la pantalla 
+                    "Menú del Día" y verás los platos disponibles para hoy.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Cómo hago un pedido bajo demanda (BBP)?</div>
+                <div class="faq-answer">
+                    <ol>
+                        <li>Accede a la sección "E-commerce / Bajo Pedido" desde el menú principal</li>
+                        <li>Selecciona los productos que deseas (tartas, cochinillos, etc.)</li>
+                        <li>Elige el método de entrega: Recogida (gratis) o Domicilio</li>
+                        <li>Si eliges domicilio, introduce tu dirección para validar la zona de entrega</li>
+                        <li>Revisa tu pedido en el carrito y presiona "Finalizar por WhatsApp"</li>
+                        <li>Se abrirá WhatsApp con tu pedido pre-rellenado. Envíalo para confirmar</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Por qué el pedido se completa por WhatsApp?</div>
+                <div class="faq-answer">
+                    Para ofrecerte un servicio personalizado y evitar pagos en línea, finalizamos los pedidos a través 
+                    de WhatsApp. Esto nos permite confirmar disponibilidad, fechas de entrega y coordinar contigo 
+                    directamente.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Qué información de alérgenos proporcionan?</div>
+                <div class="faq-answer">
+                    Cada plato muestra los alérgenos que contiene mediante iconos claros. Al tocar un plato, 
+                    verás el detalle completo de todos los alérgenos presentes.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Puedo ver el menú sin conexión a internet?</div>
+                <div class="faq-answer">
+                    Sí, una vez que has abierto la aplicación con conexión, los datos se almacenan en caché local. 
+                    Podrás consultar el menú sin internet, aunque algunos datos pueden no estar actualizados.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Cómo accedo al panel de administración?</div>
+                <div class="faq-answer">
+                    El panel de administración es solo para el personal del restaurante. Si eres administrador, 
+                    toca 5 veces el logo del restaurante en la pantalla principal en menos de 2 segundos y 
+                    introduce el PIN configurado.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿La aplicación almacena mis datos personales?</div>
+                <div class="faq-answer">
+                    No. La aplicación solo guarda preferencias locales en tu dispositivo (configuración de pantalla, etc.). 
+                    No recopilamos datos personales. Consulta nuestra 
+                    <a href="privacy-policy.html">Política de Privacidad</a> para más detalles.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">¿Qué hago si encuentro un error en la aplicación?</div>
+                <div class="faq-answer">
+                    Por favor, contacta con nuestro equipo de soporte mediante los canales indicados abajo. 
+                    Describe el problema con el mayor detalle posible (qué pantalla, qué acción, mensaje de error).
+                </div>
+            </div>
+        </div>
+
+        <h2>🛠️ Solución de Problemas Comunes</h2>
+        
+        <div class="card">
+            <h3>❌ La aplicación no carga los platos</h3>
+            <ul>
+                <li>Verifica que tienes conexión a internet</li>
+                <li>Cierra y vuelve a abrir la aplicación</li>
+                <li>Comprueba que tienes la última versión instalada</li>
+                <li>Si persiste, elimina la caché de la app en ajustes del sistema</li>
+            </ul>
+
+            <h3>📍 No puedo validar mi dirección de entrega</h3>
+            <ul>
+                <li>Asegúrate de haber concedido permisos de ubicación a la app</li>
+                <li>Verifica que tu GPS esté activado</li>
+                <li>Introduce una dirección completa y precisa</li>
+                <li>Confirma que estás dentro del radio de entrega del restaurante</li>
+            </ul>
+
+            <h3>🖼️ Las imágenes de los platos no se muestran</h3>
+            <ul>
+                <li>Comprueba tu conexión a internet</li>
+                <li>Espera unos segundos, las imágenes pueden tardar en cargar</li>
+                <li>Si usas datos móviles, verifica que la app tiene permiso para usarlos</li>
+            </ul>
+
+            <h3>🔔 No recibo notificaciones de actualizaciones</h3>
+            <ul>
+                <li>Verifica en ajustes del sistema que las notificaciones estén activadas para la app</li>
+                <li>En iOS: Ajustes → El Musical → Notificaciones → Permitir notificaciones</li>
+                <li>En Android: Ajustes → Aplicaciones → El Musical → Notificaciones → Activado</li>
+            </ul>
+        </div>
+
+        <h2>💡 Consejos y Trucos</h2>
+        <ul>
+            <li><strong>Explora por categorías:</strong> Usa las tarjetas expandibles para navegar fácilmente</li>
+            <li><strong>Consulta alérgenos:</strong> Toca cualquier plato para ver información detallada</li>
+            <li><strong>Menús especiales:</strong> Revisa "Nuestros Menús" para eventos y fines de semana</li>
+            <li><strong>Pre-pedidos con tiempo:</strong> Los productos BBP requieren reserva anticipada</li>
+            <li><strong>Modo pantalla completa:</strong> Gira tu dispositivo para mejor visualización de imágenes</li>
+        </ul>
+
+        <h2>🔄 Actualizaciones</h2>
+        <p>
+            Mantén la aplicación actualizada para disfrutar de las últimas funcionalidades y mejoras. 
+            Las actualizaciones incluyen:
+        </p>
+        <ul>
+            <li>Nuevos platos y menús especiales</li>
+            <li>Mejoras en el rendimiento</li>
+            <li>Corrección de errores</li>
+            <li>Nuevas funcionalidades</li>
+        </ul>
+        <p>
+            Recibirás una notificación cuando haya actualizaciones disponibles en tu tienda de aplicaciones.
+        </p>
+
+        <div class="contact-section">
+            <h2>📞 Contacto y Soporte</h2>
+            <p>¿Necesitas más ayuda? Estamos disponibles para ti:</p>
+            
+            <div class="contact-item">
+                <span>📧</span>
+                <strong>Email:</strong> <a href="mailto:contacto@elmusicalrestaurante.es" class="contact-email" style="color: white;">Cargando...</a>
+            </div>
+            
+            <div class="contact-item">
+                <span>📱</span>
+                <strong>WhatsApp:</strong> <span class="contact-whatsapp">Cargando...</span>
+            </div>
+            
+            <div class="contact-item">
+                <span>📍</span>
+                <strong>Dirección:</strong> <span class="contact-address">Cargando...</span>
+            </div>
+            
+            <div class="contact-item">
+                <span>🕒</span>
+                <strong>Horario de atención:</strong> Lunes a Domingo, 9:00 - 23:00
+            </div>
+
+            <p style="margin-top: 20px;">
+                <strong>Tiempo de respuesta:</strong> Intentamos responder todas las consultas en un plazo de 24-48 horas.
+            </p>
+        </div>
+
+        <h2>📄 Documentación Legal</h2>
+        <ul>
+            <li><a href="privacy-policy.html" class="button">Política de Privacidad</a></li>
+            <li><a href="#" class="button">Términos y Condiciones</a></li>
+            <li><a href="#" class="button">Información del Restaurante</a></li>
+        </ul>
+
+        <div style="text-align: center; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; color: #666;">
+            <p><strong>El Musical Restaurante</strong></p>
+            <p>Versión de la app: 1.0.0</p>
+            <p>© 2026 Todos los derechos reservados</p>
+        </div>
+    </div>
+</body>
+</html>

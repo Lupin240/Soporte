@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - El Musical Restaurante</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #89bb93;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        h2 {
+            color: #89bb93;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        h3 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .date {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .contact {
+            background: #f0f7f4;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-left: 4px solid #89bb93;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #89bb93;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 2em;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDqL4i7eQfZ6Y8Z8Z8Z8Z8Z8Z8Z8Z8Z8Z8",
+            authDomain: "elmusical-4d45a.firebaseapp.com",
+            projectId: "elmusical-4d45a",
+            storageBucket: "elmusical-4d45a.firebasestorage.app",
+            messagingSenderId: "746054692745",
+            appId: "1:746054692745:web:abcdef1234567890abcdef"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        async function loadContactInfo() {
+            try {
+                const configDoc = await getDoc(doc(db, 'config', 'general'));
+                if (configDoc.exists()) {
+                    const data = configDoc.data();
+                    
+                    const whatsapp = data.whatsappNumber || '[Número no disponible]';
+                    const address = data.restaurantAddress || '[Dirección no disponible]';
+                    const email = data.contactEmail || 'contacto@elmusicalrestaurante.es';
+                    
+                    document.querySelectorAll('.contact-whatsapp').forEach(el => el.textContent = whatsapp);
+                    document.querySelectorAll('.contact-address').forEach(el => el.textContent = address);
+                    document.querySelectorAll('.contact-email').forEach(el => {
+                        el.textContent = email;
+                        if (el.tagName === 'A') el.href = 'mailto:' + email;
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading contact info:', error);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', loadContactInfo);
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <h1>🎵 El Musical Restaurante</h1>
+        </div>
+        
+        <h1>Política de Privacidad</h1>
+        <p class="date">Última actualización: Febrero 2026</p>
+
+        <h2>1. Introducción</h2>
+        <p>
+            En El Musical Restaurante, nos tomamos muy en serio la privacidad de nuestros usuarios. Esta Política de Privacidad 
+            describe cómo recopilamos, usamos y protegemos la información cuando utilizas nuestra aplicación móvil.
+        </p>
+
+        <h2>2. Información que Recopilamos</h2>
+        <h3>2.1 Información de Uso</h3>
+        <p>Nuestra aplicación recopila y almacena localmente:</p>
+        <ul>
+            <li>Preferencias de visualización de menú</li>
+            <li>Historial de navegación dentro de la aplicación</li>
+            <li>Configuraciones personalizadas de la aplicación</li>
+        </ul>
+
+        <h3>2.2 Información del Carrito de Pedidos (Sistema de Pre-Pedido)</h3>
+        <p>Cuando utilizas nuestro sistema de pre-pedido bajo demanda, recopilamos:</p>
+        <ul>
+            <li>Productos seleccionados y cantidades</li>
+            <li>Preferencias de entrega (recogida o domicilio)</li>
+            <li>Ubicación aproximada (solo para validar el radio de entrega)</li>
+        </ul>
+        <p>
+            <strong>Importante:</strong> No procesamos pagos dentro de la aplicación. Todos los pedidos se finalizan y 
+            confirman a través de WhatsApp, donde proporcionarás tus datos personales directamente al restaurante.
+        </p>
+
+        <h3>2.3 Datos Almacenados en Firebase</h3>
+        <p>Utilizamos Firebase (Google) para almacenar:</p>
+        <ul>
+            <li>Catálogo de platos y menús del restaurante</li>
+            <li>Imágenes de los productos</li>
+            <li>Configuración general de la aplicación</li>
+        </ul>
+        <p>Esta información es pública y no contiene datos personales de los usuarios.</p>
+
+        <h2>3. Cómo Usamos Tu Información</h2>
+        <p>La información recopilada se utiliza exclusivamente para:</p>
+        <ul>
+            <li>Mejorar la experiencia de usuario en la aplicación</li>
+            <li>Mostrar menús actualizados y personalizados según el horario</li>
+            <li>Facilitar el proceso de pre-pedido a través de WhatsApp</li>
+            <li>Validar el área de cobertura para entregas a domicilio</li>
+        </ul>
+
+        <h2>4. Compartir Información</h2>
+        <p>
+            <strong>No vendemos, alquilamos ni compartimos tu información personal con terceros</strong> con fines comerciales.
+        </p>
+        <p>La información puede compartirse únicamente en estos casos:</p>
+        <ul>
+            <li><strong>Con tu consentimiento:</strong> Cuando finalizas un pedido a través de WhatsApp</li>
+            <li><strong>Servicios de Google:</strong> Firebase para almacenamiento de datos del catálogo</li>
+            <li><strong>Por obligación legal:</strong> Si es requerido por orden judicial o autoridad competente</li>
+        </ul>
+
+        <h2>5. Almacenamiento Local</h2>
+        <p>
+            Gran parte de la información se almacena localmente en tu dispositivo mediante SharedPreferences y caché local. 
+            Esto significa que:
+        </p>
+        <ul>
+            <li>Tus preferencias permanecen en tu dispositivo</li>
+            <li>Puedes acceder al menú incluso sin conexión (datos en caché)</li>
+            <li>Desinstalar la aplicación eliminará todos los datos locales</li>
+        </ul>
+
+        <h2>6. Servicios de Terceros</h2>
+        <h3>6.1 Firebase (Google)</h3>
+        <p>
+            Utilizamos Firebase para el backend de la aplicación. Consulta la 
+            <a href="https://firebase.google.com/support/privacy" target="_blank">Política de Privacidad de Firebase</a>.
+        </p>
+
+        <h3>6.2 WhatsApp</h3>
+        <p>
+            Los pedidos se finalizan a través de WhatsApp. Al hacerlo, aceptas la 
+            <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank">Política de Privacidad de WhatsApp</a>.
+        </p>
+
+        <h3>6.3 OpenStreetMap</h3>
+        <p>
+            Usamos OpenStreetMap para validar direcciones de entrega. No compartimos tu ubicación exacta con terceros.
+        </p>
+
+        <h2>7. Geolocalización</h2>
+        <p>
+            La aplicación puede solicitar tu ubicación <strong>únicamente</strong> para:
+        </p>
+        <ul>
+            <li>Validar si tu dirección está dentro del radio de entrega del restaurante</li>
+            <li>Mostrar la distancia aproximada hasta el restaurante</li>
+        </ul>
+        <p>
+            <strong>Puedes denegar este permiso</strong> y seguir usando todas las demás funciones de la aplicación. 
+            La ubicación nunca se almacena ni se comparte sin tu consentimiento explícito.
+        </p>
+
+        <h2>8. Seguridad</h2>
+        <p>
+            Implementamos medidas de seguridad razonables para proteger tu información:
+        </p>
+        <ul>
+            <li>Conexiones cifradas (HTTPS/SSL) con Firebase</li>
+            <li>Autenticación segura para el panel de administración</li>
+            <li>Almacenamiento local cifrado en tu dispositivo</li>
+            <li>Acceso restringido a datos sensibles del restaurante</li>
+        </ul>
+
+        <h2>9. Menores de Edad</h2>
+        <p>
+            Esta aplicación no está dirigida a menores de 13 años. No recopilamos intencionadamente información de menores. 
+            Si detectamos que un menor ha proporcionado información personal, la eliminaremos de inmediato.
+        </p>
+
+        <h2>10. Tus Derechos</h2>
+        <p>Según la normativa de protección de datos (RGPD), tienes derecho a:</p>
+        <ul>
+            <li><strong>Acceso:</strong> Solicitar una copia de los datos que tenemos sobre ti</li>
+            <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos</li>
+            <li><strong>Eliminación:</strong> Solicitar la eliminación de tus datos personales</li>
+            <li><strong>Oposición:</strong> Oponerte al procesamiento de tus datos</li>
+            <li><strong>Portabilidad:</strong> Recibir tus datos en formato estructurado</li>
+        </ul>
+
+        <h2>11. Cambios en esta Política</h2>
+        <p>
+            Nos reservamos el derecho de actualizar esta política de privacidad. Te notificaremos sobre cambios significativos 
+            mediante un aviso dentro de la aplicación.
+        </p>
+
+        <h2>12. Contacto</h2>
+        <div class="contact">
+            <p>Si tienes preguntas sobre esta Política de Privacidad, contáctanos:</p>
+            <p><strong>📧 Email:</strong> <span class="contact-email">Cargando...</span></p>
+            <p><strong>📱 WhatsApp:</strong> <span class="contact-whatsapp">Cargando...</span></p>
+            <p><strong>📍 Dirección:</strong> <span class="contact-address">Cargando...</span></p>
+        </div>
+
+        <h2>13. Legislación Aplicable</h2>
+        <p>
+            Esta Política de Privacidad se rige por la legislación española y europea, incluyendo el Reglamento General 
+            de Protección de Datos (RGPD/GDPR) y la Ley Orgánica de Protección de Datos (LOPD).
+        </p>
+    </div>
+</body>
+</html>
