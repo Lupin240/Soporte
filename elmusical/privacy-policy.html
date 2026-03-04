@@ -35,12 +35,14 @@
             margin-top: 30px;
             margin-bottom: 15px;
             font-size: 1.8em;
+            border-bottom: 2px solid #e8f4ec;
+            padding-bottom: 6px;
         }
         h3 {
             color: #555;
             margin-top: 20px;
             margin-bottom: 10px;
-            font-size: 1.3em;
+            font-size: 1.2em;
         }
         p {
             margin-bottom: 15px;
@@ -69,7 +71,42 @@
             text-align: center;
             margin-bottom: 30px;
         }
-        .logo h1 {
+        .note {
+            background: #fff8e1;
+            border-left: 4px solid #ffc107;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        .highlight {
+            background: #e8f4ec;
+            border-left: 4px solid #89bb93;
+            padding: 12px 16px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 0.9em;
+        }
+        th {
+            background: #89bb93;
+            color: white;
+            padding: 10px 12px;
+            text-align: left;
+        }
+        td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:nth-child(even) td {
+            background: #f9f9f9;
+        }
+        a {
             color: #89bb93;
         }
         @media (max-width: 600px) {
@@ -80,7 +117,10 @@
                 font-size: 2em;
             }
             h2 {
-                font-size: 1.5em;
+                font-size: 1.4em;
+            }
+            table {
+                font-size: 0.8em;
             }
         }
     </style>
@@ -105,11 +145,9 @@
                 const configDoc = await getDoc(doc(db, 'config', 'general'));
                 if (configDoc.exists()) {
                     const data = configDoc.data();
-                    
                     const whatsapp = data.whatsappNumber || '[Número no disponible]';
-                    const address = data.restaurantAddress || '[Dirección no disponible]';
-                    const email = data.contactEmail || 'contacto@elmusicalrestaurante.es';
-                    
+                    const address  = data.restaurantAddress || '[Dirección no disponible]';
+                    const email    = data.contactEmail || 'contacto@elmusicalrestaurante.es';
                     document.querySelectorAll('.contact-whatsapp').forEach(el => el.textContent = whatsapp);
                     document.querySelectorAll('.contact-address').forEach(el => el.textContent = address);
                     document.querySelectorAll('.contact-email').forEach(el => {
@@ -117,150 +155,331 @@
                         if (el.tagName === 'A') el.href = 'mailto:' + email;
                     });
                 }
-            } catch (error) {
-                console.error('Error loading contact info:', error);
+            } catch (e) {
+                console.error('Error loading contact info:', e);
             }
         }
-
         window.addEventListener('DOMContentLoaded', loadContactInfo);
     </script>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <h1>🎵 El Musical Restaurante</h1>
-        </div>
-        
-        <h1>Política de Privacidad</h1>
-        <p class="date">Última actualización: Febrero 2026</p>
+<div class="container">
 
-        <h2>1. Introducción</h2>
-        <p>
-            En El Musical Restaurante, nos tomamos muy en serio la privacidad de nuestros usuarios. Esta Política de Privacidad 
-            describe cómo recopilamos, usamos y protegemos la información cuando utilizas nuestra aplicación móvil.
-        </p>
+    <div class="logo">
+        <h1>🎵 El Musical Restaurante</h1>
+    </div>
 
-        <h2>2. Información que Recopilamos</h2>
-        <h3>2.1 Información de Uso</h3>
-        <p>Nuestra aplicación recopila y almacena localmente:</p>
-        <ul>
-            <li>Preferencias de visualización de menú</li>
-            <li>Historial de navegación dentro de la aplicación</li>
-            <li>Configuraciones personalizadas de la aplicación</li>
-        </ul>
+    <h1>Política de Privacidad</h1>
+    <p class="date">Última actualización: Marzo 2026</p>
 
-        <h3>2.2 Información del Carrito de Pedidos (Sistema de Pre-Pedido)</h3>
-        <p>Cuando utilizas nuestro sistema de pre-pedido bajo demanda, recopilamos:</p>
-        <ul>
-            <li>Productos seleccionados y cantidades</li>
-            <li>Preferencias de entrega (recogida o domicilio)</li>
-            <li>Ubicación aproximada (solo para validar el radio de entrega)</li>
-        </ul>
-        <p>
-            <strong>Importante:</strong> No procesamos pagos dentro de la aplicación. Todos los pedidos se finalizan y 
-            confirman a través de WhatsApp, donde proporcionarás tus datos personales directamente al restaurante.
-        </p>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>1. Introducción</h2>
+    <p>
+        En <strong>El Musical Restaurante</strong> respetamos tu privacidad y nos comprometemos a proteger los datos
+        personales que compartes con nosotros. Esta Política de Privacidad explica qué información recogemos, con qué
+        finalidad y cómo la protegemos, de conformidad con el <strong>Reglamento General de Protección de Datos
+        (RGPD/GDPR)</strong> y la <strong>Ley Orgánica de Protección de Datos y garantía de los derechos digitales
+        (LOPDGDD)</strong>.
+    </p>
+    <p>
+        Al registrarte o usar la aplicación, aceptas las prácticas descritas en este documento. Si no estás de acuerdo,
+        puedes usar la app sin crear una cuenta: la mayoría de funciones (consulta del menú, pre-pedido) están disponibles
+        sin registro.
+    </p>
 
-        <h3>2.3 Datos Almacenados en Firebase</h3>
-        <p>Utilizamos Firebase (Google) para almacenar:</p>
-        <ul>
-            <li>Catálogo de platos y menús del restaurante</li>
-            <li>Imágenes de los productos</li>
-            <li>Configuración general de la aplicación</li>
-        </ul>
-        <p>Esta información es pública y no contiene datos personales de los usuarios.</p>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>2. Responsable del Tratamiento</h2>
+    <div class="contact">
+        <p><strong>Restaurante El Musical</strong></p>
+        <p><strong>📧 Email:</strong> <a class="contact-email" href="mailto:contacto@elmusicalrestaurante.es">contacto@elmusicalrestaurante.es</a></p>
+        <p><strong>📱 WhatsApp / Teléfono:</strong> <span class="contact-whatsapp">Cargando…</span></p>
+        <p><strong>📍 Dirección:</strong> <span class="contact-address">Cargando…</span></p>
+    </div>
 
-        <h2>3. Cómo Usamos Tu Información</h2>
-        <p>La información recopilada se utiliza exclusivamente para:</p>
-        <ul>
-            <li>Mejorar la experiencia de usuario en la aplicación</li>
-            <li>Mostrar menús actualizados y personalizados según el horario</li>
-            <li>Facilitar el proceso de pre-pedido a través de WhatsApp</li>
-            <li>Validar el área de cobertura para entregas a domicilio</li>
-        </ul>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>3. Datos que Recopilamos y Finalidad</h2>
 
-        <h2>4. Compartir Información</h2>
-        <p>
-            <strong>No vendemos, alquilamos ni compartimos tu información personal con terceros</strong> con fines comerciales.
-        </p>
-        <p>La información puede compartirse únicamente en estos casos:</p>
-        <ul>
-            <li><strong>Con tu consentimiento:</strong> Cuando finalizas un pedido a través de WhatsApp</li>
-            <li><strong>Servicios de Google:</strong> Firebase para almacenamiento de datos del catálogo</li>
-            <li><strong>Por obligación legal:</strong> Si es requerido por orden judicial o autoridad competente</li>
-        </ul>
+    <h3>3.1 Cuenta de Usuario (opcional)</h3>
+    <p>Si eliges registrarte, recopilamos y almacenamos en <strong>Firebase Firestore</strong>:</p>
+    <table>
+        <thead>
+            <tr><th>Dato</th><th>Origen</th><th>Finalidad</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Nombre y apellido</td>
+                <td>Google / Apple Sign-In o registro manual</td>
+                <td>Identificación en la app y comunicaciones</td>
+            </tr>
+            <tr>
+                <td>Correo electrónico</td>
+                <td>Google / Apple Sign-In o registro manual</td>
+                <td>Inicio de sesión y notificaciones de cuenta</td>
+            </tr>
+            <tr>
+                <td>Foto de perfil (URL)</td>
+                <td>Google / Apple Sign-In</td>
+                <td>Personalización de la interfaz</td>
+            </tr>
+            <tr>
+                <td>UID de Firebase</td>
+                <td>Firebase Authentication</td>
+                <td>Identificador único interno; no revela datos externos</td>
+            </tr>
+            <tr>
+                <td>Token FCM</td>
+                <td>Firebase Cloud Messaging</td>
+                <td>Envío de notificaciones push (solo con tu permiso)</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="note">
+        <strong>Nota:</strong> El registro es completamente voluntario. La app funciona en modo invitado sin necesidad de
+        crear una cuenta; en ese caso no se recogen ni almacenan datos personales identificativos.
+    </div>
 
-        <h2>5. Almacenamiento Local</h2>
-        <p>
-            Gran parte de la información se almacena localmente en tu dispositivo mediante SharedPreferences y caché local. 
-            Esto significa que:
-        </p>
-        <ul>
-            <li>Tus preferencias permanecen en tu dispositivo</li>
-            <li>Puedes acceder al menú incluso sin conexión (datos en caché)</li>
-            <li>Desinstalar la aplicación eliminará todos los datos locales</li>
-        </ul>
+    <h3>3.2 Sistema de Fidelización y Sorteos</h3>
+    <p>Los usuarios registrados pueden participar en el programa de puntos y sorteos mensuales. Para ello almacenamos en Firestore:</p>
+    <ul>
+        <li>Puntos acumulados y papeletas de sorteo obtenidas al escanear tickets de consumo.</li>
+        <li>Código del ticket escaneado (referencia interna, sin datos bancarios ni información del pago).</li>
+        <li>Valoraciones (1-5 estrellas) y comentarios opcionales enviados al equipo del restaurante como feedback.</li>
+        <li>Historial de premios canjeados.</li>
+    </ul>
+    <div class="highlight">
+        Ninguno de estos datos incluye información bancaria o de pago; el restaurante solo recibe la puntuación
+        y el texto del comentario voluntario.
+    </div>
 
-        <h2>6. Servicios de Terceros</h2>
-        <h3>6.1 Firebase (Google)</h3>
-        <p>
-            Utilizamos Firebase para el backend de la aplicación. Consulta la 
-            <a href="https://firebase.google.com/support/privacy" target="_blank">Política de Privacidad de Firebase</a>.
-        </p>
+    <h3>3.3 Marcador de Juego (Snake Arcade)</h3>
+    <p>Si juegas al minijuego incluido en la app, guardamos en Firestore:</p>
+    <ul>
+        <li>Tu puntuación máxima mensual (ranking del mes, visible para todos los usuarios registrados).</li>
+        <li>Tu récord personal de todos los tiempos (colección privada, visible únicamente para ti).</li>
+        <li>Contador de partidas jugadas hoy (control anti-abuso, se resetea diariamente y se almacena en caché local).</li>
+    </ul>
 
-        <h3>6.2 WhatsApp</h3>
-        <p>
-            Los pedidos se finalizan a través de WhatsApp. Al hacerlo, aceptas la 
-            <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank">Política de Privacidad de WhatsApp</a>.
-        </p>
+    <h3>3.4 Pre-Pedido Bajo Demanda</h3>
+    <p>Cuando usas el sistema de encargo de productos especiales (tartas, asados, catering), recopilamos temporalmente:</p>
+    <ul>
+        <li>Productos seleccionados y cantidades.</li>
+        <li>Preferencia de entrega (recogida en local o a domicilio).</li>
+        <li>Ubicación aproximada, <strong>únicamente</strong> para validar si tu dirección está dentro del radio de reparto.
+            No se almacena la ubicación exacta en nuestros servidores.</li>
+    </ul>
+    <div class="note">
+        <strong>Importante:</strong> No procesamos pagos en la app. El pedido se confirma a través de
+        <strong>WhatsApp</strong>; los datos de contacto (nombre, dirección, teléfono) los proporcionas directamente al
+        restaurante en esa conversación y quedan sujetos a la
+        <a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank">Política de Privacidad de WhatsApp</a>.
+    </div>
 
+    <h3>3.5 Notificaciones Push</h3>
+    <p>
+        Podemos enviarte notificaciones sobre el menú del día, ofertas o resultados de sorteos.
+        Siempre solicitamos tu permiso explícito antes de activarlas. Puedes revocar este permiso en cualquier momento
+        desde los ajustes de tu dispositivo.
+    </p>
 
-        <h2>7. Seguridad</h2>
-        <p>
-            Implementamos medidas de seguridad razonables para proteger tu información:
-        </p>
-        <ul>
-            <li>Conexiones cifradas (HTTPS/SSL) con Firebase</li>
-            <li>Autenticación segura para el panel de administración</li>
-            <li>Almacenamiento local cifrado en tu dispositivo</li>
-            <li>Acceso restringido a datos sensibles del restaurante</li>
-        </ul>
+    <h3>3.6 Datos de Uso y Caché Local</h3>
+    <p>Independientemente del estado de sesión, la app almacena en tu dispositivo (sin enviarlos a servidores externos):</p>
+    <ul>
+        <li>Caché de imágenes y datos del menú para acceso sin conexión.</li>
+        <li>Preferencias de visualización (tipo de menú seleccionado, ajustes de app).</li>
+        <li>Récord personal del juego y contador de partidas diarias (ligado al usuario o al modo invitado).</li>
+    </ul>
+    <p>Desinstalar la app elimina completamente estos datos locales.</p>
 
-        <h2>8. Menores de Edad</h2>
-        <p>
-            Esta aplicación no está dirigida a menores de 13 años. No recopilamos intencionadamente información de menores. 
-            Si detectamos que un menor ha proporcionado información personal, la eliminaremos de inmediato.
-        </p>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>4. Permisos del Dispositivo</h2>
+    <table>
+        <thead>
+            <tr><th>Permiso</th><th>Plataforma</th><th>Por qué lo necesitamos</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Cámara</strong></td>
+                <td>Android e iOS</td>
+                <td>Escanear códigos QR de tickets de consumo para acumular puntos. El administrador también puede
+                    fotografiar platos del menú.</td>
+            </tr>
+            <tr>
+                <td><strong>Acceso a imágenes</strong><br>
+                    <small>READ_MEDIA_IMAGES (Android 13+) / Librería de fotos (iOS)</small></td>
+                <td>Android e iOS</td>
+                <td>Exclusivo del panel de administración: seleccionar una foto de la galería para asociarla a un plato
+                    del menú. Los clientes nunca activan este permiso.</td>
+            </tr>
+            <tr>
+                <td><strong>Notificaciones push</strong></td>
+                <td>Android e iOS</td>
+                <td>Recibir avisos sobre el menú del día, ofertas y resultados de sorteos. Es opcional y revocable.</td>
+            </tr>
+            <tr>
+                <td><strong>Ubicación aproximada</strong></td>
+                <td>Android e iOS</td>
+                <td>Solo cuando usas el sistema de reparto a domicilio, para verificar si estás dentro del radio de
+                    entrega. No se almacena ni comparte.</td>
+            </tr>
+            <tr>
+                <td><strong>Internet</strong></td>
+                <td>Android</td>
+                <td>Comunicación con Firebase (menú, cuenta, ranking) y envío de notificaciones.</td>
+            </tr>
+            <tr>
+                <td><strong>Vibración</strong></td>
+                <td>Android</td>
+                <td>Feedback háptico en el juego Snake y al escanear un código QR.</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        Puedes revocar cualquier permiso en cualquier momento desde <em>Ajustes → Aplicaciones → El Musical</em>.
+        Denegar un permiso no impide usar el resto de funciones de la app.
+    </p>
 
-        <h2>9. Tus Derechos</h2>
-        <p>Según la normativa de protección de datos (RGPD), tienes derecho a:</p>
-        <ul>
-            <li><strong>Acceso:</strong> Solicitar una copia de los datos que tenemos sobre ti</li>
-            <li><strong>Rectificación:</strong> Corregir datos inexactos o incompletos</li>
-            <li><strong>Eliminación:</strong> Solicitar la eliminación de tus datos personales</li>
-            <li><strong>Oposición:</strong> Oponerte al procesamiento de tus datos</li>
-            <li><strong>Portabilidad:</strong> Recibir tus datos en formato estructurado</li>
-        </ul>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>5. Base Legal del Tratamiento</h2>
+    <ul>
+        <li><strong>Ejecución de contrato / relación precontractual</strong> (Art. 6.1.b RGPD): gestión de la cuenta,
+            fidelización y pre-pedidos.</li>
+        <li><strong>Consentimiento</strong> (Art. 6.1.a RGPD): notificaciones push, geolocalización para reparto y
+            participación en sorteos.</li>
+        <li><strong>Interés legítimo</strong> (Art. 6.1.f RGPD): prevención de fraude (control de partidas diarias en el
+            juego) y mejora de la experiencia de usuario.</li>
+    </ul>
 
-        <h2>10. Cambios en esta Política</h2>
-        <p>
-            Nos reservamos el derecho de actualizar esta política de privacidad. Te notificaremos sobre cambios significativos 
-            mediante un aviso dentro de la aplicación.
-        </p>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>6. Transferencia y Compartición de Datos</h2>
+    <p>
+        <strong>No vendemos, cedemos ni alquilamos tus datos personales a terceros con fines comerciales.</strong>
+    </p>
+    <p>Los datos pueden ser accedidos por los siguientes proveedores de servicios, bajo sus propias políticas de privacidad:</p>
+    <table>
+        <thead>
+            <tr><th>Proveedor</th><th>Servicio</th><th>Enlace</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Google LLC</strong></td>
+                <td>Firebase Authentication, Firestore, Storage, Cloud Functions, FCM (notificaciones push), AdMob</td>
+                <td><a href="https://policies.google.com/privacy" target="_blank">Política de Google</a></td>
+            </tr>
+            <tr>
+                <td><strong>Meta Platforms Ireland</strong></td>
+                <td>WhatsApp (finalización de pedidos)</td>
+                <td><a href="https://www.whatsapp.com/legal/privacy-policy" target="_blank">Política de WhatsApp</a></td>
+            </tr>
+            <tr>
+                <td><strong>OpenStreetMap Foundation</strong></td>
+                <td>Validación de dirección de entrega</td>
+                <td><a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank">Política de OSM</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <p>
+        Google LLC está certificada bajo el <em>EU-US Data Privacy Framework</em>, lo que garantiza un nivel de protección
+        equivalente al exigido por la legislación europea. Solo compartiremos datos con autoridades públicas cuando exista
+        una obligación legal, judicial o administrativa que lo exija.
+    </p>
 
-        <h2>11. Contacto</h2>
-        <div class="contact">
-            <p>Si tienes preguntas sobre esta Política de Privacidad, contáctanos:</p>
-            <p><strong>📧 Email:</strong> <span class="contact-email">Cargando...</span></p>
-            <p><strong>📱 WhatsApp:</strong> <span class="contact-whatsapp">Cargando...</span></p>
-            <p><strong>📍 Dirección:</strong> <span class="contact-address">Cargando...</span></p>
-        </div>
+    <!-- ─────────────────────────────────────────── -->
+    <h2>7. Conservación de los Datos</h2>
+    <ul>
+        <li><strong>Datos de cuenta:</strong> mientras la cuenta esté activa. Al solicitar la eliminación se borran en
+            un plazo máximo de 30 días.</li>
+        <li><strong>Puntos y papeletas de sorteo:</strong> historial mensual conservado durante 12 meses.</li>
+        <li><strong>Feedback y valoraciones:</strong> conservados de forma anonimizada durante 24 meses.</li>
+        <li><strong>Ranking del juego:</strong> puntuaciones mensuales durante el mes en curso; récord personal
+            mientras la cuenta esté activa.</li>
+        <li><strong>Datos de pre-pedido:</strong> el carrito es local y efímero; no se persiste en nuestros servidores
+            una vez enviado el pedido por WhatsApp.</li>
+        <li><strong>Caché local:</strong> se elimina al desinstalar la aplicación.</li>
+    </ul>
 
-        <h2>12. Legislación Aplicable</h2>
-        <p>
-            Esta Política de Privacidad se rige por la legislación española y europea, incluyendo el Reglamento General 
-            de Protección de Datos (RGPD/GDPR) y la Ley Orgánica de Protección de Datos (LOPD).
+    <!-- ─────────────────────────────────────────── -->
+    <h2>8. Seguridad</h2>
+    <p>Aplicamos las siguientes medidas técnicas y organizativas:</p>
+    <ul>
+        <li>Comunicaciones cifradas mediante <strong>TLS/HTTPS</strong> en todas las llamadas a Firebase.</li>
+        <li>Reglas de seguridad de Firestore y Storage que garantizan que cada usuario solo accede a sus propios datos.</li>
+        <li>Autenticación de dos factores disponible a través de Google / Apple Sign-In.</li>
+        <li>Panel de administración protegido por PIN dinámico gestionado desde Firebase.</li>
+        <li>Las contraseñas nunca se almacenan en texto claro; Firebase Authentication gestiona las credenciales
+            de forma segura.</li>
+    </ul>
+    <p>
+        Ningún sistema es 100 % invulnerable. Si detectas alguna vulnerabilidad, te rogamos que la comuniques
+        de forma responsable a nuestro correo de contacto.
+    </p>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>9. Derechos de los Usuarios</h2>
+    <p>De acuerdo con el RGPD, puedes ejercer los siguientes derechos contactándonos por email:</p>
+    <ul>
+        <li><strong>Acceso (Art. 15):</strong> obtener una copia de los datos que tenemos sobre ti.</li>
+        <li><strong>Rectificación (Art. 16):</strong> corregir datos inexactos o incompletos.</li>
+        <li><strong>Supresión / derecho al olvido (Art. 17):</strong> solicitar la eliminación de tu cuenta y todos los
+            datos asociados. También disponible directamente en la app desde <em>Mi Perfil → Eliminar cuenta</em>.</li>
+        <li><strong>Limitación del tratamiento (Art. 18):</strong> solicitar que restrinjamos el uso de tus datos en
+            determinadas circunstancias.</li>
+        <li><strong>Portabilidad (Art. 20):</strong> recibir tus datos en formato estructurado y legible por máquina.</li>
+        <li><strong>Oposición (Art. 21):</strong> oponerte al tratamiento basado en interés legítimo.</li>
+        <li><strong>Retirada del consentimiento:</strong> en cualquier momento, sin que ello afecte a la licitud del
+            tratamiento anterior.</li>
+    </ul>
+    <p>
+        También tienes derecho a presentar una reclamación ante la
+        <strong>Agencia Española de Protección de Datos (AEPD)</strong>:
+        <a href="https://www.aepd.es" target="_blank">www.aepd.es</a>.
+    </p>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>10. Menores de Edad</h2>
+    <p>
+        Esta aplicación no está dirigida a menores de 16 años. No recopilamos intencionadamente datos personales de
+        menores. Si tenemos conocimiento de que un menor ha creado una cuenta, procederemos a su eliminación inmediata.
+        Si eres padre/tutor y crees que tu hijo ha proporcionado sus datos, contáctanos en el email indicado.
+    </p>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>11. Cookies y Tecnologías Similares</h2>
+    <p>
+        La aplicación móvil no utiliza cookies. Usa <strong>SharedPreferences</strong> (Android) y
+        <strong>NSUserDefaults</strong> (iOS) para almacenar preferencias exclusivamente de forma local en tu
+        dispositivo. Esta página web no emplea cookies de seguimiento ni publicidad.
+    </p>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>12. Cambios en esta Política</h2>
+    <p>
+        Podemos actualizar esta política ante cambios normativos o nuevas funcionalidades. Te notificaremos mediante
+        un aviso destacado dentro de la aplicación con al menos 15 días de antelación para cambios sustanciales.
+        La fecha de la última revisión siempre aparece en la parte superior de este documento.
+    </p>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>13. Contacto</h2>
+    <div class="contact">
+        <p>Para ejercer tus derechos o resolver cualquier duda sobre esta política, contáctanos:</p>
+        <p><strong>📧 Email:</strong> <a class="contact-email" href="mailto:contacto@elmusicalrestaurante.es">Cargando…</a></p>
+        <p><strong>📱 WhatsApp / Teléfono:</strong> <span class="contact-whatsapp">Cargando…</span></p>
+        <p><strong>📍 Dirección:</strong> <span class="contact-address">Cargando…</span></p>
+        <p style="margin-top:12px; font-size:0.9em; color:#666;">
+            Responderemos a tu solicitud en un plazo máximo de <strong>30 días naturales</strong> desde su recepción.
         </p>
     </div>
+
+    <!-- ─────────────────────────────────────────── -->
+    <h2>14. Legislación Aplicable</h2>
+    <p>Esta Política de Privacidad se rige por la legislación española y europea, incluyendo:</p>
+    <ul>
+        <li>Reglamento (UE) 2016/679 — Reglamento General de Protección de Datos (RGPD/GDPR).</li>
+        <li>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos
+            digitales (LOPDGDD).</li>
+        <li>Directiva 2002/58/CE sobre privacidad y comunicaciones electrónicas (ePrivacy).</li>
+    </ul>
+
+</div>
 </body>
 </html>
